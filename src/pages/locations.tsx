@@ -10,7 +10,7 @@ const EP = [
   },
 ];
 
-const LocationPage = () => (
+const LocationsPage = () => (
   <MainLayout>
     <Subheader img={EP[0].img}>
       <h5>LUGAR ALEATORIO</h5>
@@ -50,4 +50,4 @@ const ContentEpisodes = styled.div`
   }
 `;
 
-export default LocationPage;
+export default LocationsPage;

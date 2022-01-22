@@ -15,6 +15,7 @@ import {
   EnvironmentOutlined,
 } from "@ant-design/icons";
 import NewEpisode from "../components/newEpisode";
+import { Link, useLocation } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
@@ -22,6 +23,14 @@ const MainLayout = forwardRef<
   unknown,
   PropsWithChildren<JSX.IntrinsicElements["div"]>
 >(({ children }, ref) => {
+  let location = useLocation();
+  const [currentPath, setCurrentPath] = useState<string>(
+    location.pathname == "/episodes"
+      ? "3"
+      : location.pathname == "/locations"
+      ? "2"
+      : "1"
+  );
   const [collapsed, changeCollapsed] = useState<boolean>(true);
   const [modalVisible, changeModalVisible] = useState<boolean>(false);
   const [scrollPosition, changeScrollPosition] = useState<number>(0);
@@ -30,10 +39,11 @@ const MainLayout = forwardRef<
   };
 
   useEffect(() => {
+    setCurrentPath("1");
     document
       .getElementById("contentScroller")
       ?.addEventListener("scroll", handleScroll);
-  }, []);
+  }, [location]);
 
   return (
     <Layout className="all">
@@ -45,15 +55,15 @@ const MainLayout = forwardRef<
             }
           />
         </div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["3"]}>
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={[currentPath]}>
           <Menu.Item key="1" icon={<UserOutlined />}>
-            Personajes
+            <Link to="/characters">Personajes</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<EnvironmentOutlined />}>
-            Lugares
+            <Link to="/locations">Lugares</Link>
           </Menu.Item>
           <Menu.Item key="3" icon={<VideoCameraOutlined />}>
-            Episodios
+            <Link to="/episodes">Episodios</Link>
           </Menu.Item>
         </Menu>
       </Sider>
@@ -73,13 +83,15 @@ const MainLayout = forwardRef<
               onClick: toggle,
             }
           )}
-          <Button
-            type="primary"
-            onClick={() => changeModalVisible(!modalVisible)}
-          >
-            <VideoCameraAddOutlined />
-            Nuevo episodio
-          </Button>
+          {location.pathname == "/episodes" && (
+            <Button
+              type="primary"
+              onClick={() => changeModalVisible(!modalVisible)}
+            >
+              <VideoCameraAddOutlined />
+              Nuevo episodio
+            </Button>
+          )}
           <Modal
             title="Nuevo episodio"
             visible={modalVisible}
