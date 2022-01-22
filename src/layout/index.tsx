@@ -1,25 +1,39 @@
-import React, { forwardRef, PropsWithChildren, useState } from "react";
+import React, {
+  forwardRef,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from "react";
 import "./layout.css";
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu, Modal } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
   VideoCameraOutlined,
-  ShopOutlined,
+  VideoCameraAddOutlined,
+  EnvironmentOutlined,
 } from "@ant-design/icons";
-import logo from "./logo.svg";
+import NewEpisode from "../components/newEpisode";
 
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = forwardRef<
   unknown,
   PropsWithChildren<JSX.IntrinsicElements["div"]>
->(({ children }) => {
+>(({ children }, ref) => {
   const [collapsed, changeCollapsed] = useState<boolean>(true);
+  const [modalVisible, changeModalVisible] = useState<boolean>(false);
+  const [scrollPosition, changeScrollPosition] = useState<number>(0);
   const toggle = () => {
     changeCollapsed(!collapsed);
   };
+
+  useEffect(() => {
+    document
+      .getElementById("contentScroller")
+      ?.addEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <Layout className="all">
@@ -31,11 +45,11 @@ const MainLayout = forwardRef<
             }
           />
         </div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["2"]}>
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={["3"]}>
           <Menu.Item key="1" icon={<UserOutlined />}>
             Personajes
           </Menu.Item>
-          <Menu.Item key="2" icon={<ShopOutlined />}>
+          <Menu.Item key="2" icon={<EnvironmentOutlined />}>
             Lugares
           </Menu.Item>
           <Menu.Item key="3" icon={<VideoCameraOutlined />}>
@@ -44,7 +58,14 @@ const MainLayout = forwardRef<
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background">
+        <Header
+          className={`header ${scrollPosition > 50 && "header-dark"}`}
+          style={{
+            backgroundColor: `rgba(239,242,245,${
+              scrollPosition >= 250 ? 1 : scrollPosition * 0.0055
+            })`,
+          }}
+        >
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
@@ -52,11 +73,42 @@ const MainLayout = forwardRef<
               onClick: toggle,
             }
           )}
+          <Button
+            type="primary"
+            onClick={() => changeModalVisible(!modalVisible)}
+          >
+            <VideoCameraAddOutlined />
+            Nuevo episodio
+          </Button>
+          <Modal
+            title="Nuevo episodio"
+            visible={modalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            okText="Crear"
+            cancelText="Cancelar"
+          >
+            <NewEpisode />
+          </Modal>
         </Header>
-        <Content>{children}</Content>
+        <Content className="content" id="contentScroller">
+          {children}
+        </Content>
       </Layout>
     </Layout>
   );
+
+  // TODO: Despejar comentario
+  //@ts-ignore
+  function handleScroll(e) {
+    changeScrollPosition(e.target.scrollTop);
+  }
+  function handleOk() {
+    changeModalVisible(false);
+  }
+  function handleCancel() {
+    changeModalVisible(false);
+  }
 });
 
 export default MainLayout;

@@ -5,21 +5,20 @@
 }
 
 .trigger {
-  padding: 0 24px;
   font-size: 18px;
   line-height: 64px;
   cursor: pointer;
   transition: color 0.3s;
+  color: white;
 }
 
-.trigger:hover {
+.header-dark > .trigger, .trigger:hover {
   color: #1890ff;
 }
 
 .logo {
   height: 32px;
   margin: 16px;
-  /* background: rgba(255, 255, 255, 0.3); */
   overflow: hidden;
 }
 
@@ -30,6 +29,17 @@
   max-height: 100%;
 }
 
-.site-layout .site-layout-background {
-  background: #fff;
+.header {
+  background: transparent;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: #E1E1E1; */
+}
+
+.content{
+  overflow : hidden;
+  overflow-y: scroll;
+  margin-top : -64px
 }

@@ -1,10 +1,10 @@
 import React from "react";
-import MainLayout from "./layout";
+import EpisodesPage from "./pages/episodes";
 
 
 function App() {
   return (
-    <MainLayout />
+    <EpisodesPage />
   );
 }
 
