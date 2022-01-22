@@ -1,10 +1,11 @@
 import React from "react";
-import EpisodesPage from "./pages/episodes";
+import CharactersPage from "./pages/characters";
+// import EpisodesPage from "./pages/episodes";
 
 
 function App() {
   return (
-    <EpisodesPage />
+    <CharactersPage />
   );
 }
 

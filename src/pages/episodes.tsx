@@ -123,7 +123,7 @@ const ContentAvatar = styled.div`
 
 const ContentEpisodes = styled.div`
   background-color: #101332;
-  height: 200vh;
+  min-height: 70vh;
   padding: 20px;
 
   h2{

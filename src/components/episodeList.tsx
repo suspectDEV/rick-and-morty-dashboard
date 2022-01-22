@@ -3,7 +3,6 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Modal, Form, Input, DatePicker } from "antd";
 import { useState } from "react";
 
-
 interface epInterface {
   id?: string;
   name?: string;
@@ -109,19 +108,26 @@ const EpisodeList = () => {
         </thead>
         <tbody>
           {DATA.map((episode, index) => (
-            <tr
-              key={"episode-" + index}
-            >
+            <tr key={"episode-" + index}>
               <>
-              <td>{episode.id}</td>
-              <td>{episode.name}</td>
-              <td>{episode.episode}</td>
-              <td>{episode.air_date}</td>
-              <td>{episode.url}</td>
+                <td>{episode.id}</td>
+                <td>{episode.name}</td>
+                <td>{episode.episode}</td>
+                <td>{episode.air_date}</td>
+                <td>{episode.url}</td>
               </>
               <td>
-                <EditOutlined className="edit" onClick={() => {setEpisode(DATA[index]);setEditEpisode(!editEpisode)}} />
-                <DeleteOutlined className="delete" onClick={()=>deleteEpisode(episode.id)} />
+                <EditOutlined
+                  className="edit"
+                  onClick={() => {
+                    setEpisode(DATA[index]);
+                    setEditEpisode(!editEpisode);
+                  }}
+                />
+                <DeleteOutlined
+                  className="delete"
+                  onClick={() => deleteEpisode(episode.id)}
+                />
               </td>
             </tr>
           ))}
@@ -147,7 +153,7 @@ const EpisodeList = () => {
           <Form.Item label="Fecha de lanzamiento" required>
             <DatePicker />
           </Form.Item>
-          <Form.Item label="URL" required >
+          <Form.Item label="URL" required>
             <Input
               placeholder="https://rickandmortyapi.com/api/episode/#"
               value={episode.url}
@@ -155,9 +161,6 @@ const EpisodeList = () => {
           </Form.Item>
         </Form>
       </Modal>
-
-      {/* Eliminar episodio */}
-
     </>
   );
 
@@ -165,11 +168,11 @@ const EpisodeList = () => {
   function handleCancel() {
     setEditEpisode(false);
   }
-  function deleteEpisode(index : string | undefined) {
+  function deleteEpisode(index: string | undefined) {
     Modal.error({
       title: `Episodio ${index}`,
-      content: '¿Desea eliminar este episodio?',
-      okText: "Eliminar"
+      content: "¿Desea eliminar este episodio?",
+      okText: "Eliminar",
     });
   }
 };
@@ -206,9 +209,9 @@ const MyTable = styled.table`
         background-color: white;
         color: #1890ff;
       }
-      .anticon{
+      .anticon {
         cursor: pointer;
-        &:last-child{
+        &:last-child {
           margin-left: 10px;
         }
       }
@@ -222,20 +225,20 @@ const MyTable = styled.table`
       }
     }
   }
-  @media (max-width: 810px){
-    th:nth-child(5){
-      display:none;
+  @media (max-width: 810px) {
+    th:nth-child(5) {
+      display: none;
     }
-    td:nth-child(5){
-      display:none;
+    td:nth-child(5) {
+      display: none;
     }
   }
-  @media (max-width: 575px){
-    th:nth-child(4){
-      display:none;
+  @media (max-width: 575px) {
+    th:nth-child(4) {
+      display: none;
     }
-    td:nth-child(4){
-      display:none;
+    td:nth-child(4) {
+      display: none;
     }
   }
 `;
