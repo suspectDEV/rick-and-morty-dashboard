@@ -17,7 +17,7 @@ const CharacterList = () => {
   const [character, setCharacters] = useState<Ichar[] | []>([]);
 
   useEffect(() => {
-    getCharacterList().then((val) => {
+    getCharacters().then((val) => {
       setCharacters(val.results);
       setCountCharacters(val.info.count)
     });
@@ -38,7 +38,7 @@ const CharacterList = () => {
     </>
   );
 
-  async function getCharacterList() {
+  async function getCharacters() {
     const response = await fetch("https://rickandmortyapi.com/api/character", {
       method: "GET",
     });

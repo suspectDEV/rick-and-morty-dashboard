@@ -1,11 +1,10 @@
 import React from "react";
-import CharactersPage from "./pages/characters";
-// import EpisodesPage from "./pages/episodes";
+import LocationPage from "./pages/locations";
 
 
 function App() {
   return (
-    <CharactersPage />
+    <LocationPage />
   );
 }
 

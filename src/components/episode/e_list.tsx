@@ -3,7 +3,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Modal, Form, Input, DatePicker } from "antd";
 import { useState } from "react";
 
-interface epInterface {
+interface Iepisode {
   id?: string;
   name?: string;
   air_date?: string;
@@ -13,7 +13,7 @@ interface epInterface {
   created?: string;
 }
 
-const DATA: epInterface[] = [
+const DATA: Iepisode[] = [
   {
     id: "1",
     name: "Pilot",
@@ -90,7 +90,7 @@ const DATA: epInterface[] = [
 
 const EpisodeList = () => {
   const [editEpisode, setEditEpisode] = useState<boolean>(false);
-  const [episode, setEpisode] = useState<epInterface>({});
+  const [episode, setEpisode] = useState<Iepisode>({});
 
   return (
     <>
