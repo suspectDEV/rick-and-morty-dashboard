@@ -1,5 +1,8 @@
+import { Pagination } from "antd";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { API_ENDPOINT } from "../../services/contants";
 
 interface Ichar {
   name: string;
@@ -13,15 +16,20 @@ interface Ilocation {
 }
 
 const CharacterList = () => {
+  let location = useLocation();
+  let navigate = useNavigate();
   const [countCharacter, setCountCharacters] = useState<number>(0);
   const [character, setCharacters] = useState<Ichar[] | []>([]);
+  const [currentPage, setCurrentPage] = useState<string>(
+    location.search !== "" ? location.search.split("=")[1] : "1"
+  );
 
   useEffect(() => {
     getCharacters().then((val) => {
       setCharacters(val.results);
-      setCountCharacters(val.info.count)
+      setCountCharacters(val.info.count);
     });
-  }, []);
+  }, [currentPage]);
 
   return (
     <>
@@ -31,18 +39,31 @@ const CharacterList = () => {
           <Character key={i}>
             <Image img={character.image} />
             <h4>{character.name}</h4>
-            <h5>{character.location.name}</h5>
+            {/* <h5>{character.location.name}</h5> */}
           </Character>
         ))}
       </Grid>
+      <div style={{ textAlign: "center" }}>
+        <Pagination
+          current={parseInt(currentPage)}
+          total={countCharacter}
+          pageSize={20}
+          onChange={handlePageClick}
+        />
+      </div>
     </>
   );
 
   async function getCharacters() {
-    const response = await fetch("https://rickandmortyapi.com/api/character", {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${API_ENDPOINT}/character/?page=${currentPage}`,
+      { method: "GET" }
+    );
     return response.json();
+  }
+  function handlePageClick(pageNumber: number) {
+    setCurrentPage(pageNumber + "");
+    navigate("?page=" + pageNumber);
   }
 };
 

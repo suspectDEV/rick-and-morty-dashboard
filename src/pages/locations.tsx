@@ -6,7 +6,7 @@ import LocationList from "../components/location/l_list";
 const EP = [
   {
     title: "Citadel of Ricks",
-    img: "https://heavy.com/wp-content/uploads/2017/09/screen-shot-2017-04-01-at-8-02-30-pm.png",
+    img: "/img/base/location.png",
   },
 ];
 

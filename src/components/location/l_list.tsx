@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_ENDPOINT } from "../../services/contants";
 import { MyTable } from "../table.style";
 
 interface Ilocation {
@@ -57,7 +58,7 @@ const LocationList = () => {
   );
 
   async function getLocations(){
-    const response = await fetch("https://rickandmortyapi.com/api/location",{method: "GET"})
+    const response = await fetch(`${API_ENDPOINT}/location`,{method: "GET"})
     return response.json()
   }
 };

@@ -2,7 +2,7 @@ import MainLayout from "../layout";
 import styled from "styled-components";
 import { Subheader, Fade, Avatar } from "../components/parallaxSubheader";
 import CharacterList from "../components/character/c_list";
-const BANNER = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/rick-and-morty-s5-2-1625139647.jpg"
+const BANNER = "/img/base/character.jpeg"
 
 const CharactersPage = () => (
   <MainLayout>

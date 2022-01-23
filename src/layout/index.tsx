@@ -14,7 +14,7 @@ import {
   VideoCameraAddOutlined,
   EnvironmentOutlined,
 } from "@ant-design/icons";
-import NewEpisode from "../components/newEpisode";
+import NewEpisode from "../components/episode/e_new";
 import { Link, useLocation } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;

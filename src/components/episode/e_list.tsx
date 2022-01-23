@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Modal, Form, Input, DatePicker } from "antd";
-import { useState } from "react";
+import { Modal, Form, Input, DatePicker, Pagination } from "antd";
+import { useEffect, useState } from "react";
+import { MyTable } from "../table.style";
+import { API_ENDPOINT } from "../../services/contants";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface Iepisode {
   id?: string;
@@ -13,88 +16,28 @@ interface Iepisode {
   created?: string;
 }
 
-const DATA: Iepisode[] = [
-  {
-    id: "1",
-    name: "Pilot",
-    air_date: "December 2, 2013",
-    episode: "S01E01",
-    characters: [],
-    url: "https://rickandmortyapi.com/api/episode/1",
-    created: "2017-11-10T12:56:33.798Z",
-  },
-  {
-    id: "2",
-    name: "Lawnmower Dog",
-    air_date: "December 9, 2013",
-    episode: "S01E02",
-    characters: [],
-    url: "https://rickandmortyapi.com/api/episode/1",
-    created: "2017-11-10T12:56:33.798Z",
-  },
-  {
-    id: "3",
-    name: "Anatomy Park",
-    air_date: "December 16, 2013",
-    episode: "S01E03",
-    characters: [],
-    url: "https://rickandmortyapi.com/api/episode/1",
-    created: "",
-  },
-  {
-    id: "4",
-    name: "M. Night Shaym-Aliens!",
-    air_date: "January 13, 2014",
-    episode: "S01E04",
-    characters: [],
-    url: "https://rickandmortyapi.com/api/episode/1",
-    created: "",
-  },
-  {
-    id: "5",
-    name: "Meeseeks and Destroy",
-    air_date: "January 20, 2014",
-    episode: "S01E05",
-    characters: [],
-    url: "https://rickandmortyapi.com/api/episode/1",
-    created: "",
-  },
-  {
-    id: "6",
-    name: "Rick Potion #9",
-    air_date: "January 27, 2014",
-    episode: "S01E06",
-    characters: [],
-    url: "https://rickandmortyapi.com/api/episode/1",
-    created: "",
-  },
-  {
-    id: "7",
-    name: "Raising Gazorpazorp",
-    air_date: "March 10, 2014",
-    episode: "S01E07",
-    characters: [],
-    url: "https://rickandmortyapi.com/api/episode/1",
-    created: "",
-  },
-  {
-    id: "8",
-    name: "Rixty Minutes",
-    air_date: "March 17, 2014",
-    episode: "S01E08",
-    characters: [],
-    url: "https://rickandmortyapi.com/api/episode/1",
-    created: "",
-  },
-];
-
 const EpisodeList = () => {
+  let location = useLocation();
+  let navigate = useNavigate();
   const [editEpisode, setEditEpisode] = useState<boolean>(false);
-  const [episode, setEpisode] = useState<Iepisode>({});
+  const [episodeToEdit, setEpisodeToEdit] = useState<Iepisode>({});
+  const [episodes, setEpisodes] = useState<Iepisode[] | []>([]);
+  const [countEpisodes, setCountEpisodes] = useState(0);
+  const [currentPage, setCurrentPage] = useState<string>(
+    location.search !== "" ? location.search.split("=")[1] : "1"
+  );
+
+  useEffect(() => {
+    getEpisodes().then((val) => {
+      setEpisodes(val.results);
+      setCountEpisodes(val.info.count);
+    });
+    console.log("currentPage", currentPage);
+  }, [currentPage]);
 
   return (
     <>
-      <h2>Episodios (20)</h2>
+      <h2>Episodios ({countEpisodes})</h2>
       <MyTable>
         <thead>
           <tr>
@@ -107,7 +50,7 @@ const EpisodeList = () => {
           </tr>
         </thead>
         <tbody>
-          {DATA.map((episode, index) => (
+          {episodes.map((episode, index) => (
             <tr key={"episode-" + index}>
               <>
                 <td>{episode.id}</td>
@@ -120,7 +63,7 @@ const EpisodeList = () => {
                 <EditOutlined
                   className="edit"
                   onClick={() => {
-                    setEpisode(DATA[index]);
+                    setEpisodeToEdit(episodes[index]);
                     setEditEpisode(!editEpisode);
                   }}
                 />
@@ -134,9 +77,18 @@ const EpisodeList = () => {
         </tbody>
       </MyTable>
 
+      <div style={{ textAlign: "center" }}>
+        <Pagination
+          current={parseInt(currentPage)}
+          total={countEpisodes}
+          pageSize={20}
+          onChange={handlePageClick}
+        />
+      </div>
+
       {/* Editar episodio */}
       <Modal
-        title={`Editar episodio ${episode.id}`}
+        title={`Editar episodio ${episodeToEdit.id}`}
         visible={editEpisode}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -145,10 +97,10 @@ const EpisodeList = () => {
       >
         <Form layout="vertical">
           <Form.Item label="Nombre del episodio" required>
-            <Input placeholder="Anatomy park" value={episode.name} />
+            <Input placeholder="Anatomy park" value={episodeToEdit.name} />
           </Form.Item>
           <Form.Item label="Episodio" required>
-            <Input placeholder="S01E03" value={episode.episode} />
+            <Input placeholder="S01E03" value={episodeToEdit.episode} />
           </Form.Item>
           <Form.Item label="Fecha de lanzamiento" required>
             <DatePicker />
@@ -156,13 +108,26 @@ const EpisodeList = () => {
           <Form.Item label="URL" required>
             <Input
               placeholder="https://rickandmortyapi.com/api/episode/#"
-              value={episode.url}
+              value={episodeToEdit.url}
             />
           </Form.Item>
         </Form>
       </Modal>
     </>
   );
+
+  async function getEpisodes() {
+    const response = await fetch(
+      `${API_ENDPOINT}/episode/?page=${currentPage}`,
+      { method: "GET" }
+    );
+    return response.json();
+  }
+
+  function handlePageClick(pageNumber: number) {
+    setCurrentPage(pageNumber + "");
+    navigate("?page=" + pageNumber);
+  }
 
   function handleOk() {}
   function handleCancel() {
@@ -176,71 +141,5 @@ const EpisodeList = () => {
     });
   }
 };
-
-const MyTable = styled.table`
-  width: 100%;
-  color: white;
-
-  th {
-    text-align: left;
-    color: #ffffff66;
-  }
-
-  td,
-  th {
-    height: 40px;
-  }
-
-  td:first-child,
-  th:first-child {
-    padding-left: 10px;
-  }
-
-  tbody {
-    tr {
-      transition: 300ms;
-      border-radius: 3px;
-
-      &:not(:last-child) {
-        border-bottom: 1px solid #e1e1e11a;
-      }
-
-      &:hover {
-        background-color: white;
-        color: #1890ff;
-      }
-      .anticon {
-        cursor: pointer;
-        &:last-child {
-          margin-left: 10px;
-        }
-      }
-
-      .edit:hover {
-        color: green;
-      }
-
-      .delete:hover {
-        color: red;
-      }
-    }
-  }
-  @media (max-width: 810px) {
-    th:nth-child(5) {
-      display: none;
-    }
-    td:nth-child(5) {
-      display: none;
-    }
-  }
-  @media (max-width: 575px) {
-    th:nth-child(4) {
-      display: none;
-    }
-    td:nth-child(4) {
-      display: none;
-    }
-  }
-`;
 
 export default EpisodeList;
