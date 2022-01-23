@@ -28,11 +28,11 @@ const EpisodeList = () => {
   );
 
   useEffect(() => {
-    getEpisodes().then((val) => {
-      setEpisodes(val.results);
-      setCountEpisodes(val.info.count);
-    });
-    console.log("currentPage", currentPage);
+    getEpisodes()
+      .then((val) => {
+        setEpisodes(val.results);
+        setCountEpisodes(val.info.count);
+      })
   }, [currentPage]);
 
   return (
@@ -117,10 +117,15 @@ const EpisodeList = () => {
   );
 
   async function getEpisodes() {
+    var token: any = localStorage.getItem("token")!;
     const response = await fetch(
       `${API_ENDPOINT}/episode/?page=${currentPage}`,
-      { method: "GET" }
+      {
+        method: "GET",
+        headers: { "x-access-token": token },
+      }
     );
+    if(response.status == 401 || response.status == 403){navigate("/login")}
     return response.json();
   }
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_ENDPOINT } from "../../services/contants";
 import { MyTable } from "../table.style";
 
@@ -12,16 +13,16 @@ interface Ilocation {
 }
 
 const LocationList = () => {
+  const navigate = useNavigate();
+  const [locations, setLocations] = useState<Ilocation[] | []>([]);
+  const [countLocations, setCountLocations] = useState(0);
 
-  const [locations, setLocations] = useState<Ilocation[] | []>([])
-  const [countLocations, setCountLocations] = useState(0)
-
-  useEffect(()=>{
-    getLocations().then((val)=>{
-      setLocations(val.results)
-      setCountLocations(val.info.count)
-    })
-  },[])
+  useEffect(() => {
+    getLocations().then((val) => {
+      setLocations(val.results);
+      setCountLocations(val.info.count);
+    });
+  }, []);
 
   return (
     <>
@@ -47,9 +48,7 @@ const LocationList = () => {
                 <td>{location.dimension}</td>
                 <td>{location.url}</td>
               </>
-              <td>
-                ...
-              </td>
+              <td>...</td>
             </tr>
           ))}
         </tbody>
@@ -57,9 +56,16 @@ const LocationList = () => {
     </>
   );
 
-  async function getLocations(){
-    const response = await fetch(`${API_ENDPOINT}/location`,{method: "GET"})
-    return response.json()
+  async function getLocations() {
+    var token: any = localStorage.getItem("token")!;
+    const response = await fetch(`${API_ENDPOINT}/location`, {
+      method: "GET",
+      headers: { "x-access-token": token },
+    });
+    if (response.status == 401 || response.status == 403) {
+      navigate("/login");
+    }
+    return response.json();
   }
 };
 

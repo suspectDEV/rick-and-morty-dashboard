@@ -15,7 +15,7 @@ import {
   EnvironmentOutlined,
 } from "@ant-design/icons";
 import NewEpisode from "../components/episode/e_new";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
@@ -23,7 +23,8 @@ const MainLayout = forwardRef<
   unknown,
   PropsWithChildren<JSX.IntrinsicElements["div"]>
 >(({ children }, ref) => {
-  let location = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate()
   const [currentPath, setCurrentPath] = useState<string>(
     location.pathname == "/episodes"
       ? "3"
@@ -83,15 +84,20 @@ const MainLayout = forwardRef<
               onClick: toggle,
             }
           )}
-          {location.pathname == "/episodes" && (
-            <Button
-              type="primary"
-              onClick={() => changeModalVisible(!modalVisible)}
-            >
-              <VideoCameraAddOutlined />
-              Nuevo episodio
+          <div>
+            {location.pathname == "/episodes" && (
+              <Button
+                type="primary"
+                onClick={() => changeModalVisible(!modalVisible)}
+              >
+                <VideoCameraAddOutlined />
+                Nuevo episodio
+              </Button>
+            )}
+            <Button onClick={()=> {localStorage.removeItem("token");navigate("/login")}} >
+              Salir
             </Button>
-          )}
+          </div>
           <Modal
             title="Nuevo episodio"
             visible={modalVisible}

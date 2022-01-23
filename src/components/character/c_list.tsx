@@ -55,10 +55,15 @@ const CharacterList = () => {
   );
 
   async function getCharacters() {
+    var token: any = localStorage.getItem("token")!;
     const response = await fetch(
       `${API_ENDPOINT}/character/?page=${currentPage}`,
-      { method: "GET" }
+      {
+        method: "GET",
+        headers: { "x-access-token": token },
+      }
     );
+    if(response.status == 401 || response.status == 403){navigate("/login")}
     return response.json();
   }
   function handlePageClick(pageNumber: number) {
