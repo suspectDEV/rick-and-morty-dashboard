@@ -107,7 +107,18 @@ const EpisodeList = () => {
       title: `Episodio ${index}`,
       content: "¿Desea eliminar este episodio?",
       okText: "Eliminar",
+      onOk: ()=>{handleDelete(index).then((_)=>{navigate(0)})},
+      onCancel : Modal.destroyAll
     });
+  }
+
+  async function handleDelete(index : any){
+    var token: any = localStorage.getItem("token")!;
+      const response = await fetch(`${API_ENDPOINT}/episode/${index}`, {
+        method: "DELETE",
+        headers: {"x-access-token": token },
+      });
+      return response.json();
   }
 };
 
