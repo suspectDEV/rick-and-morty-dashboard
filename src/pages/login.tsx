@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const TOKEN =
+// Token quemado
+const HARDC_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.c_C9oJ3QbnPDLuWgl4NMOniNlyvxrIUaTrKeMrDjdFU";
 
 const Login = () => {
@@ -23,7 +24,7 @@ const Login = () => {
         type="primary"
         htmlType="submit"
         onClick={() => {
-          localStorage.setItem("token", TOKEN);
+          localStorage.setItem("token", HARDC_TOKEN);
           navigate("/");
         }}
       >
