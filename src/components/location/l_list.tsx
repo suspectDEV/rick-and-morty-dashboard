@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Pagination } from "antd";
 import { API_ENDPOINT } from "../../services/contants";
-import { MyTable } from "../table.style";
+import { ContainerPagination, MyTable } from "../table.style";
 
 interface Ilocation {
   id?: string;
@@ -13,16 +14,20 @@ interface Ilocation {
 }
 
 const LocationList = () => {
-  const navigate = useNavigate();
+  let location = useLocation();
+  let navigate = useNavigate();
   const [locations, setLocations] = useState<Ilocation[] | []>([]);
   const [countLocations, setCountLocations] = useState(0);
+  const [currentPage, setCurrentPage] = useState<string>(
+    location.search !== "" ? location.search.split("=")[1] : "1"
+  );
 
   useEffect(() => {
     getLocations().then((val) => {
       setLocations(val.results);
       setCountLocations(val.info.count);
     });
-  }, []);
+  }, [currentPage]);
 
   return (
     <>
@@ -53,12 +58,20 @@ const LocationList = () => {
           ))}
         </tbody>
       </MyTable>
+      <ContainerPagination>
+        <Pagination
+          current={parseInt(currentPage)}
+          total={countLocations}
+          pageSize={20}
+          onChange={handlePageClick}
+        />
+      </ContainerPagination>
     </>
   );
 
   async function getLocations() {
     var token: any = localStorage.getItem("token")!;
-    const response = await fetch(`${API_ENDPOINT}/location`, {
+    const response = await fetch(`${API_ENDPOINT}/location/?page=${currentPage}`, {
       method: "GET",
       headers: { "x-access-token": token },
     });
@@ -66,6 +79,11 @@ const LocationList = () => {
       navigate("/login");
     }
     return response.json();
+  }
+
+  function handlePageClick(pageNumber: number) {
+    setCurrentPage(pageNumber + "");
+    navigate("?page=" + pageNumber);
   }
 };
 
