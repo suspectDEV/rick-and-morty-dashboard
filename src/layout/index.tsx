@@ -87,7 +87,7 @@ const MainLayout = forwardRef<
             {location.pathname == "/episodes" && (
               <NewEpisode />
             )}
-            <Button onClick={()=> {localStorage.removeItem("token");navigate("/login")}} >
+            <Button onClick={()=> {localStorage.removeItem("token");navigate("/login")}} style={{marginLeft:10}} >
               Salir
             </Button>
           </div>

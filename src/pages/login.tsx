@@ -1,19 +1,42 @@
+import { Button, Form } from "antd";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.c_C9oJ3QbnPDLuWgl4NMOniNlyvxrIUaTrKeMrDjdFU";
 
-const Login = () => (
-  <div>
-    <h1>Hello</h1>
-    <button onClick={() => localStorage.setItem("token", TOKEN)}>
-      Guardar token
-    </button>
-    <br />
-    <a href="/characters">Personajes</a>
-    <br />
-    <a href="/locations">Lugares</a>
-    <br />
-    <a href="/episodes">Ir a episodios</a>
-  </div>
-);
+const Login = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    var token = localStorage.getItem("token");
+    if (token && token != "") {
+      navigate("/");
+    }
+  });
+
+  return (
+    <Container>
+      <h1>Bienvenido</h1>
+      <Button
+        type="primary"
+        htmlType="submit"
+        onClick={() => {
+          localStorage.setItem("token", TOKEN);
+          navigate("/");
+        }}
+      >
+        Generar token y acceder
+      </Button>
+    </Container>
+  );
+};
+
+const Container = styled(Form)`
+  margin: auto;
+  text-align: center;
+  padding-top: 35vh;
+`;
 
 export default Login;

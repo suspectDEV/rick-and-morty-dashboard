@@ -57,7 +57,7 @@ const EpisodeList = () => {
                 <td>{episode.id}</td>
                 <td>{episode.name}</td>
                 <td>{episode.episode}</td>
-                <td>{moment(episode.air_date).format("MMM Do YY")}</td>
+                <td>{moment(episode.air_date).format("MMMM Do, YYYY")}</td>
                 <td>{episode.url}</td>
               </>
               <td>
