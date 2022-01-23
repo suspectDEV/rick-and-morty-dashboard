@@ -65,3 +65,8 @@ tbody {
   }
 }
 `;
+
+export const ContainerPagination = styled.div`
+  text-align: center;
+  margin : 2rem auto;
+`

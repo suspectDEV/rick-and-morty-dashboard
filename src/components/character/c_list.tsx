@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { API_ENDPOINT } from "../../services/contants";
+import { ContainerPagination } from "../table.style";
 
 interface Ichar {
   name: string;
@@ -43,14 +44,14 @@ const CharacterList = () => {
           </Character>
         ))}
       </Grid>
-      <div style={{ textAlign: "center" }}>
+      <ContainerPagination>
         <Pagination
           current={parseInt(currentPage)}
           total={countCharacter}
           pageSize={20}
           onChange={handlePageClick}
         />
-      </div>
+      </ContainerPagination>
     </>
   );
 

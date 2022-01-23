@@ -33,7 +33,6 @@ const MainLayout = forwardRef<
       : "1"
   );
   const [collapsed, changeCollapsed] = useState<boolean>(true);
-  const [modalVisible, changeModalVisible] = useState<boolean>(false);
   const [scrollPosition, changeScrollPosition] = useState<number>(0);
   const toggle = () => {
     changeCollapsed(!collapsed);
@@ -86,28 +85,12 @@ const MainLayout = forwardRef<
           )}
           <div>
             {location.pathname == "/episodes" && (
-              <Button
-                type="primary"
-                onClick={() => changeModalVisible(!modalVisible)}
-              >
-                <VideoCameraAddOutlined />
-                Nuevo episodio
-              </Button>
+              <NewEpisode />
             )}
             <Button onClick={()=> {localStorage.removeItem("token");navigate("/login")}} >
               Salir
             </Button>
           </div>
-          <Modal
-            title="Nuevo episodio"
-            visible={modalVisible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            okText="Crear"
-            cancelText="Cancelar"
-          >
-            <NewEpisode />
-          </Modal>
         </Header>
         <Content className="content" id="contentScroller">
           {children}
@@ -120,12 +103,6 @@ const MainLayout = forwardRef<
   //@ts-ignore
   function handleScroll(e) {
     changeScrollPosition(e.target.scrollTop);
-  }
-  function handleOk() {
-    changeModalVisible(false);
-  }
-  function handleCancel() {
-    changeModalVisible(false);
   }
 });
 

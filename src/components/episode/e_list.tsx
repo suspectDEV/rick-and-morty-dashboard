@@ -1,12 +1,15 @@
-import styled from "styled-components";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Modal, Form, Input, DatePicker, Pagination } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { Modal, Pagination } from "antd";
 import { useEffect, useState } from "react";
-import { MyTable } from "../table.style";
+import { ContainerPagination, MyTable } from "../table.style";
 import { API_ENDPOINT } from "../../services/contants";
 import { useLocation, useNavigate } from "react-router-dom";
 
-interface Iepisode {
+// ..Components
+import EditEpisode from "./e_edit";
+import moment from "moment";
+
+export interface Iepisode {
   id?: string;
   name?: string;
   air_date?: string;
@@ -19,8 +22,6 @@ interface Iepisode {
 const EpisodeList = () => {
   let location = useLocation();
   let navigate = useNavigate();
-  const [editEpisode, setEditEpisode] = useState<boolean>(false);
-  const [episodeToEdit, setEpisodeToEdit] = useState<Iepisode>({});
   const [episodes, setEpisodes] = useState<Iepisode[] | []>([]);
   const [countEpisodes, setCountEpisodes] = useState(0);
   const [currentPage, setCurrentPage] = useState<string>(
@@ -56,17 +57,11 @@ const EpisodeList = () => {
                 <td>{episode.id}</td>
                 <td>{episode.name}</td>
                 <td>{episode.episode}</td>
-                <td>{episode.air_date}</td>
+                <td>{moment(episode.air_date).format("MMM Do YY")}</td>
                 <td>{episode.url}</td>
               </>
               <td>
-                <EditOutlined
-                  className="edit"
-                  onClick={() => {
-                    setEpisodeToEdit(episodes[index]);
-                    setEditEpisode(!editEpisode);
-                  }}
-                />
+                <EditEpisode t_episode={episodes[index]} />
                 <DeleteOutlined
                   className="delete"
                   onClick={() => deleteEpisode(episode.id)}
@@ -77,42 +72,14 @@ const EpisodeList = () => {
         </tbody>
       </MyTable>
 
-      <div style={{ textAlign: "center" }}>
+      <ContainerPagination>
         <Pagination
           current={parseInt(currentPage)}
           total={countEpisodes}
           pageSize={20}
           onChange={handlePageClick}
         />
-      </div>
-
-      {/* Editar episodio */}
-      <Modal
-        title={`Editar episodio ${episodeToEdit.id}`}
-        visible={editEpisode}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okText="Actualizar"
-        cancelText="Cancelar"
-      >
-        <Form layout="vertical">
-          <Form.Item label="Nombre del episodio" required>
-            <Input placeholder="Anatomy park" value={episodeToEdit.name} />
-          </Form.Item>
-          <Form.Item label="Episodio" required>
-            <Input placeholder="S01E03" value={episodeToEdit.episode} />
-          </Form.Item>
-          <Form.Item label="Fecha de lanzamiento" required>
-            <DatePicker />
-          </Form.Item>
-          <Form.Item label="URL" required>
-            <Input
-              placeholder="https://rickandmortyapi.com/api/episode/#"
-              value={episodeToEdit.url}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+      </ContainerPagination>
     </>
   );
 
@@ -134,10 +101,7 @@ const EpisodeList = () => {
     navigate("?page=" + pageNumber);
   }
 
-  function handleOk() {}
-  function handleCancel() {
-    setEditEpisode(false);
-  }
+  
   function deleteEpisode(index: string | undefined) {
     Modal.error({
       title: `Episodio ${index}`,
