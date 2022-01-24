@@ -1,5 +1,5 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Modal, Pagination } from "antd";
+import { Empty, Modal, Pagination } from "antd";
 import { useEffect, useState } from "react";
 import { ContainerPagination, MyTable } from "../table.style";
 import { API_ENDPOINT } from "../../services/contants";
@@ -39,6 +39,8 @@ const EpisodeList = () => {
   return (
     <>
       <h2>Episodios ({countEpisodes})</h2>
+      {countEpisodes > 0?
+      <>
       <MyTable>
         <thead>
           <tr>
@@ -80,6 +82,9 @@ const EpisodeList = () => {
           onChange={handlePageClick}
         />
       </ContainerPagination>
+      </>
+      : <Empty style={{ color: "white", marginTop: 100 }} />
+      }
     </>
   );
 

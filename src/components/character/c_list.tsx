@@ -1,4 +1,4 @@
-import { Pagination } from "antd";
+import { Button, Empty, Pagination } from "antd";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -35,23 +35,28 @@ const CharacterList = () => {
   return (
     <>
       <h2>Personajes ({countCharacter})</h2>
-      <Grid>
-        {character.map((character, i) => (
-          <Character key={i}>
-            <Image img={character.image} />
-            <h4>{character.name}</h4>
-            <h5>{character.location.name}</h5>
-          </Character>
-        ))}
-      </Grid>
-      <ContainerPagination>
-        <Pagination
-          current={parseInt(currentPage)}
-          total={countCharacter}
-          pageSize={20}
-          onChange={handlePageClick}
-        />
-      </ContainerPagination>
+      {countCharacter > 0 ?
+      <>
+        <Grid>
+          {character.map((character, i) => (
+            <Character key={i}>
+              <Image img={character.image} />
+              <h4>{character.name}</h4>
+              <h5>{character.location.name}</h5>
+            </Character>
+          ))}
+        </Grid>
+        <ContainerPagination>
+          <Pagination
+            current={parseInt(currentPage)}
+            total={countCharacter}
+            pageSize={20}
+            onChange={handlePageClick}
+            />
+        </ContainerPagination>
+      </>
+      : <Empty style={{ color: "white", marginTop: 100 }} />
+      }
     </>
   );
 
@@ -64,7 +69,9 @@ const CharacterList = () => {
         headers: { "x-access-token": token },
       }
     );
-    if(response.status == 401 || response.status == 403){navigate("/login")}
+    if (response.status == 401 || response.status == 403) {
+      navigate("/login");
+    }
     return response.json();
   }
   function handlePageClick(pageNumber: number) {

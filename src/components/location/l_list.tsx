@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Pagination } from "antd";
+import { Empty, Pagination } from "antd";
 import { API_ENDPOINT } from "../../services/contants";
 import { ContainerPagination, MyTable } from "../table.style";
 
@@ -32,6 +32,9 @@ const LocationList = () => {
   return (
     <>
       <h2>Lugares ({countLocations})</h2>
+      {
+        countLocations > 0?
+      <>
       <MyTable>
         <thead>
           <tr>
@@ -66,6 +69,9 @@ const LocationList = () => {
           onChange={handlePageClick}
         />
       </ContainerPagination>
+      </>
+      : <Empty style={{ color: "white", marginTop: 100 }} />
+      }
     </>
   );
 
