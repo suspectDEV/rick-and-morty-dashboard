@@ -33,6 +33,9 @@ const EpisodeList = () => {
       .then((val) => {
         setEpisodes(val.results);
         setCountEpisodes(val.info.count);
+      }).catch(()=>{
+        navigate("/login")
+        alert("No se ha podido establecer conexión con la API. \nPor favor revise su ejecución\n" + API_ENDPOINT)
       })
   }, [currentPage]);
 
