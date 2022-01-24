@@ -9,7 +9,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { Modal, Form, Input, DatePicker } from "antd";
 import { Iepisode } from "./e_list";
 import moment from "antd/node_modules/moment";
-import { API_ENDPOINT } from "../../services/contants";
+import { API_ENDPOINT } from "../../services/constants";
 import { useNavigate } from "react-router-dom";
 
 interface IeditEpisode {

@@ -4,7 +4,7 @@ import { Iepisode } from "./e_list";
 import moment from "moment";
 import { Button, DatePicker, Form, Input, Modal } from "antd";
 import { VideoCameraAddOutlined } from "@ant-design/icons";
-import { API_ENDPOINT } from "../../services/contants";
+import { API_ENDPOINT } from "../../services/constants";
 
 const NewEpisode = () => {
 

@@ -2,7 +2,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Empty, Modal, Pagination } from "antd";
 import { useEffect, useState } from "react";
 import { ContainerPagination, MyTable } from "../table.style";
-import { API_ENDPOINT } from "../../services/contants";
+import { API_ENDPOINT } from "../../services/constants";
 import { useLocation, useNavigate } from "react-router-dom";
 
 // ..Components

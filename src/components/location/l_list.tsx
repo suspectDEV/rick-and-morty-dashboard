@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Empty, Pagination } from "antd";
-import { API_ENDPOINT } from "../../services/contants";
+import { API_ENDPOINT } from "../../services/constants";
 import { ContainerPagination, MyTable } from "../table.style";
 
 interface Ilocation {
