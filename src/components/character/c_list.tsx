@@ -40,7 +40,7 @@ const CharacterList = () => {
           <Character key={i}>
             <Image img={character.image} />
             <h4>{character.name}</h4>
-            {/* <h5>{character.location.name}</h5> */}
+            <h5>{character.location.name}</h5>
           </Character>
         ))}
       </Grid>
