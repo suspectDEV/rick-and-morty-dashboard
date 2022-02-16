@@ -1,4 +1,4 @@
-# Vertebra GUI
+# Rick And Morty - Dashboard
 
 ## Configuración inicial
 
